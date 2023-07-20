@@ -6,11 +6,18 @@ namespace Chess {
         static void Main(string[] args) {
             ChessBoard board = new ChessBoard(8, 8);
 
-            board.insertPiece(new Tower(board, Color.Black), new Position(0, 0));
-            board.insertPiece(new Tower(board, Color.Black), new Position(1, 3));
-            board.insertPiece(new King(board, Color.Black), new Position(2, 4));
+            try {
+                board.insertPiece(new Tower(board, Color.Black), new Position(0, 9));
 
-            Screen.printBoard(board);
+                // board.insertPiece(new Tower(board, Color.Black), new Position(1, 3));
+                // board.insertPiece(new King(board, Color.Black), new Position(2, 4));
+                Screen.printBoard(board);
+            }
+            catch (BoardException e) {
+                Console.WriteLine(e.Message);
+            }
+
+
         }
     }
-}
+} 
