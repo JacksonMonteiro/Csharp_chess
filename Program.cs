@@ -4,20 +4,27 @@ using Chess.Chess;
 namespace Chess {
     internal class Program {
         static void Main(string[] args) {
-            ChessBoard board = new ChessBoard(8, 8);
-
             try {
-                board.insertPiece(new Tower(board, Color.Black), new Position(0, 0));
-                board.insertPiece(new Tower(board, Color.Black), new Position(1, 3));
-                board.insertPiece(new King(board, Color.Black), new Position(2, 4));
-                
-                Screen.printBoard(board);
+                ChessMatch match = new ChessMatch();
+
+                while(!match.isEnded) {
+                    Console.Clear();
+                    Screen.printBoard(match.Board);
+
+                    Console.WriteLine();
+                    Console.Write("Digite a posição de origem da peça (c1, por exemplo): ");
+                    Position origin = Screen.readChessPosition().toPosition();
+
+                    Console.Write("Digite a posição de destino da peça (e1, por exemplo): ");
+                    Position destiny = Screen.readChessPosition().toPosition();
+
+                    match.executeMovement(origin, destiny);
+                }
+
             }
             catch (BoardException e) {
                 Console.WriteLine(e.Message);
             }
-
-
         }
     }
 } 

@@ -11,5 +11,9 @@
             Color = color;
             MovementQnt = 0;
         }
+
+        public void incrementMovementQnt() {
+            MovementQnt++;
+        }
     }
 }
