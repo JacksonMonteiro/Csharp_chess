@@ -5,8 +5,8 @@
         public int MovementQnt { get; protected set; }
         public ChessBoard Board { get; protected set; }
 
-        public Piece(Position position, ChessBoard board, Color color) {
-            Position = position;
+        public Piece(ChessBoard board, Color color) {
+            Position = null;
             Board = board;
             Color = color;
             MovementQnt = 0;
