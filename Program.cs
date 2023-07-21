@@ -8,23 +8,35 @@ namespace Chess {
                 ChessMatch match = new ChessMatch();
 
                 while (!match.isEnded) {
-                    Console.Clear();
-                    Screen.printBoard(match.Board);
+                    try {
+                        Console.Clear();
+                        Screen.printBoard(match.Board);
 
-                    Console.WriteLine();
-                    Console.Write("Digite a posição de origem da peça (c1, por exemplo): ");
-                    Position origin = Screen.readChessPosition().toPosition();
+                        Console.WriteLine();
+                        Console.WriteLine("Turn: " + match.Turn);
+                        Console.WriteLine("Waiting move: " + match.CurrentPlayer);
 
-                    bool[,] possibleMovements = match.Board.piece(origin).possibleMovements();
+                        Console.WriteLine();
+                        Console.Write("Insert the origin of piece(example, c1): ");
+                        Position origin = Screen.readChessPosition().toPosition();
+                        match.validateOriginPosition(origin);
 
-                    Console.Clear();
-                    Screen.printBoard(match.Board, possibleMovements);
+                        bool[,] possibleMovements = match.Board.piece(origin).possibleMovements();
 
-                    Console.WriteLine();
-                    Console.Write("Digite a posição de destino da peça (e1, por exemplo): ");
-                    Position destiny = Screen.readChessPosition().toPosition();
+                        Console.Clear();
+                        Screen.printBoard(match.Board, possibleMovements);
 
-                    match.executeMovement(origin, destiny);
+                        Console.WriteLine();
+                        Console.Write("Insert the destiny of piece (example, e1): ");
+                        Position destiny = Screen.readChessPosition().toPosition();
+                        match.validateDestinyPosition(origin, destiny);
+
+                        match.executeChessMovement(origin, destiny);
+                    }
+                    catch (BoardException e) {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
                 }
 
             }
