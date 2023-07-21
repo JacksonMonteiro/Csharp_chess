@@ -1,6 +1,7 @@
-﻿using Chess.Board;
+﻿using board;
 
-namespace Chess.Chess {
+
+namespace chess {
     internal class ChessPosition {
         public char Column { get; set; }
         public int Line { get; set; }
@@ -15,7 +16,7 @@ namespace Chess.Chess {
         }
 
         public override string ToString() {
-            return $"{Column}{Line}";
+            return "" + Column + Line;
         }
     }
 }

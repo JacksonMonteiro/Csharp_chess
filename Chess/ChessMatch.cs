@@ -1,6 +1,6 @@
-﻿using Chess.Board;
+﻿using board;
 
-namespace Chess.Chess {
+namespace chess {
     internal class ChessMatch {
         public ChessBoard Board { get; private set; }
         private int Turn;
@@ -19,7 +19,7 @@ namespace Chess.Chess {
             Piece p = Board.removePiece(origin);
             p.incrementMovementQnt();
 
-            Piece capturePiece = Board.removePiece(destiny);
+            Piece capturedPiece = Board.removePiece(destiny);
             Board.insertPiece(p, destiny);
         }
 
@@ -27,17 +27,16 @@ namespace Chess.Chess {
             Board.insertPiece(new Tower(Board, Color.White), new ChessPosition('c', 1).toPosition());
             Board.insertPiece(new Tower(Board, Color.White), new ChessPosition('c', 2).toPosition());
             Board.insertPiece(new Tower(Board, Color.White), new ChessPosition('d', 2).toPosition());
-            Board.insertPiece(new Tower(Board, Color.White), new ChessPosition('e', 1).toPosition());
             Board.insertPiece(new Tower(Board, Color.White), new ChessPosition('e', 2).toPosition());
-            
+            Board.insertPiece(new Tower(Board, Color.White), new ChessPosition('e', 1).toPosition());
             Board.insertPiece(new King(Board, Color.White), new ChessPosition('d', 1).toPosition());
+            
             
             Board.insertPiece(new Tower(Board, Color.Black), new ChessPosition('c', 7).toPosition());
             Board.insertPiece(new Tower(Board, Color.Black), new ChessPosition('c', 8).toPosition());
             Board.insertPiece(new Tower(Board, Color.Black), new ChessPosition('d', 7).toPosition());
             Board.insertPiece(new Tower(Board, Color.Black), new ChessPosition('e', 7).toPosition());
             Board.insertPiece(new Tower(Board, Color.Black), new ChessPosition('e', 8).toPosition());
-            
             Board.insertPiece(new King(Board, Color.Black), new ChessPosition('d', 8).toPosition());
         }
     }

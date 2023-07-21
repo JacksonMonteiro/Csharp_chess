@@ -1,5 +1,5 @@
-﻿namespace Chess.Board {
-    internal class ChessBoard {
+﻿namespace board {
+    class ChessBoard {
         public int Lines { get; set; }
         public int Columns { get; set; }
         private Piece[,] pieces;
@@ -40,7 +40,7 @@
         }
 
         public bool isValidPosition(Position pos) {
-            if (pos.Line < 0 || pos.Line > Lines || pos.Column < 0 || pos.Column > Columns) {
+            if (pos.Line < 0 || pos.Line >= Lines || pos.Column < 0 || pos.Column >= Columns) {
                 return false;
             }
 
