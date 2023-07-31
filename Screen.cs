@@ -64,5 +64,35 @@ namespace Chess {
            
             return new ChessPosition(column, line);
         }
+
+        public static void printChessMatch(ChessMatch match) {
+            printBoard(match.Board);
+            Console.WriteLine();
+            printCapturedPieces(match);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + match.Turn);
+            Console.WriteLine("Waiting move: " + match.CurrentPlayer);
+        }
+
+        public static void printCapturedPieces(ChessMatch match) {
+            Console.WriteLine("Captured Pieces: ");
+            Console.Write("White: ");
+            printSet(match.capturedPieces(Color.White));
+            Console.WriteLine();
+            Console.Write("Black: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+            printSet(match.capturedPieces(Color.Black));
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+
+        public static void printSet(HashSet<Piece> set) {
+            Console.Write("[");
+            foreach (Piece piece in set) {
+                Console.Write(piece + " ");
+            }
+            Console.Write("]");
+        }
     }
 }

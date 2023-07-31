@@ -10,11 +10,8 @@ namespace Chess {
                 while (!match.isEnded) {
                     try {
                         Console.Clear();
-                        Screen.printBoard(match.Board);
 
-                        Console.WriteLine();
-                        Console.WriteLine("Turn: " + match.Turn);
-                        Console.WriteLine("Waiting move: " + match.CurrentPlayer);
+                        Screen.printChessMatch(match);
 
                         Console.WriteLine();
                         Console.Write("Insert the origin of piece(example, c1): ");
