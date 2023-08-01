@@ -16,6 +16,10 @@
             MovementQnt++;
         }
 
+        public void decreaseMovementQnt() {
+            MovementQnt--;
+        }
+
         public abstract bool[,] possibleMovements();
 
         public bool exitsPossibleMovement() {

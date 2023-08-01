@@ -61,7 +61,7 @@ namespace Chess {
             string s = Console.ReadLine();
             char column = s[0];
             int line = int.Parse(s[1] + "");
-           
+
             return new ChessPosition(column, line);
         }
 
@@ -71,7 +71,18 @@ namespace Chess {
             printCapturedPieces(match);
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.Turn);
-            Console.WriteLine("Waiting move: " + match.CurrentPlayer);
+
+
+            if (!match.isEnded) {
+                Console.WriteLine("Waiting move: " + match.CurrentPlayer);
+                if (match.Check) {
+                    Console.WriteLine("Check!");
+                }
+            }
+            else {
+                Console.WriteLine("Mate!");
+                Console.WriteLine("Winner: " + match.CurrentPlayer);
+            }
         }
 
         public static void printCapturedPieces(ChessMatch match) {

@@ -11,7 +11,7 @@ namespace Chess {
                     try {
                         Console.Clear();
 
-                        Screen.printChessMatch(match);
+                        Screen.printChessMatch(match); 
 
                         Console.WriteLine();
                         Console.Write("Insert the origin of piece(example, c1): ");
@@ -35,6 +35,9 @@ namespace Chess {
                         Console.ReadLine();
                     }
                 }
+
+                Console.Clear();
+                Screen.printChessMatch(match);
 
             }
             catch (BoardException e) {
