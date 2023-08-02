@@ -34,6 +34,24 @@ namespace chess {
                 CapturedPieces.Add(capturedPiece);
             }
 
+            // Short Castle
+            if (p is King && destiny.Column == origin.Column + 2) {
+                Position rookOrigin = new Position(origin.Line, origin.Column + 3);
+                Position rookDestiny = new Position(origin.Line, origin.Column + 1);
+                Piece piece = Board.removePiece(rookOrigin);
+                piece.incrementMovementQnt();
+                Board.insertPiece(piece, rookDestiny);
+            }
+
+            // Long Castle
+            if (p is King && destiny.Column == origin.Column - 2) {
+                Position rookOrigin = new Position(origin.Line, origin.Column - 4);
+                Position rookDestiny = new Position(origin.Line, origin.Column - 1);
+                Piece piece = Board.removePiece(rookOrigin);
+                piece.incrementMovementQnt();
+                Board.insertPiece(piece, rookDestiny);
+            }
+
             return capturedPiece;
         }
 
@@ -46,6 +64,24 @@ namespace chess {
             }
 
             Board.insertPiece(piece, origin);
+
+            // Short Castle
+            if (piece is King && destiny.Column == origin.Column + 2) {
+                Position rookOrigin = new Position(origin.Line, origin.Column + 3);
+                Position rookDestiny = new Position(origin.Line, origin.Column + 1);
+                Piece rookPiece = Board.removePiece(rookDestiny);
+                rookPiece.decreaseMovementQnt();
+                Board.insertPiece(rookPiece, rookOrigin);
+            }
+
+            // Short Castle
+            if (piece is King && destiny.Column == origin.Column - 2) {
+                Position rookOrigin = new Position(origin.Line, origin.Column - 4);
+                Position rookDestiny = new Position(origin.Line, origin.Column - 1);
+                Piece rookPiece = Board.removePiece(rookDestiny);
+                rookPiece.decreaseMovementQnt();
+                Board.insertPiece(rookPiece, rookOrigin);
+            }
         }
 
         public void executeChessMovement(Position origin, Position destiny) {
@@ -138,7 +174,7 @@ namespace chess {
             insertNewPiece('b', 1, new Knight(Board, Color.White));
             insertNewPiece('c', 1, new Bishop(Board, Color.White));
             insertNewPiece('d', 1, new Queen(Board, Color.White));
-            insertNewPiece('e', 1, new King(Board, Color.White));
+            insertNewPiece('e', 1, new King(Board, Color.White, this));
             insertNewPiece('f', 1, new Bishop(Board, Color.White));
             insertNewPiece('g', 1, new Knight(Board, Color.White));
             insertNewPiece('h', 1, new Rook(Board, Color.White));
@@ -155,7 +191,7 @@ namespace chess {
             insertNewPiece('b', 8, new Knight(Board, Color.Black));
             insertNewPiece('c', 8, new Bishop(Board, Color.Black));
             insertNewPiece('d', 8, new Queen(Board, Color.Black));
-            insertNewPiece('e', 8, new King(Board, Color.Black));
+            insertNewPiece('e', 8, new King(Board, Color.Black, this));
             insertNewPiece('f', 8, new Bishop(Board, Color.Black));
             insertNewPiece('g', 8, new Knight(Board, Color.Black));
             insertNewPiece('h', 8, new Rook(Board, Color.Black));
