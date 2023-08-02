@@ -90,7 +90,7 @@ namespace chess {
         }
 
         public void validateDestinyPosition(Position origin, Position destiny) {
-            if (!Board.piece(origin).canMoveTo(destiny)) {
+            if (!Board.piece(origin).possibleMovement(destiny)) {
                 throw new BoardException("Invalid destiny position");
             }
         }
