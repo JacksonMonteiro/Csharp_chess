@@ -3,20 +3,21 @@ using chess;
 
 namespace Chess.chess {
     internal class Pawn : Piece {
-        public Pawn(ChessBoard Board, Color Color) : base(Board, Color) {
-            
+        private ChessMatch Match;
+        public Pawn(ChessBoard Board, Color Color, ChessMatch match) : base(Board, Color) {
+            Match = match;
         }
 
         public override string ToString() {
             return "P";
         }
 
-        private bool existeInimigo(Position pos) {
+        private bool existsEnemy(Position pos) {
             Piece p = Board.piece(pos);
             return p != null && p.Color != Color;
         }
 
-        private bool livre(Position pos) {
+        private bool isFree(Position pos) {
             return Board.piece(pos) == null;
         }
 
@@ -26,64 +27,65 @@ namespace Chess.chess {
 
             if (Color == Color.White) {
                 pos.defineValues(Position.Line - 1, Position.Column);
-                if (Board.isValidPosition(pos) && livre(pos)) {
+                if (Board.isValidPosition(pos) && isFree(pos)) {
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.defineValues(Position.Line - 2, Position.Column);
+                pos.defineValues(Position.Line - 2, Position.Column);
                 Position p2 = new Position(Position.Line - 1, Position.Column);
-                if (Board.isValidPosition(p2) && livre(p2) && Board.isValidPosition(pos) && livre(pos) && MovementQnt == 0) {
+                if (Board.isValidPosition(p2) && isFree(p2) && Board.isValidPosition(pos) && isFree(pos) && MovementQnt == 0) {
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.defineValues(Position.Line - 1, Position.Column - 1);
-                if (Board.isValidPosition(pos) && existeInimigo(pos)) {
+                if (Board.isValidPosition(pos) && existsEnemy(pos)) {
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.defineValues(Position.Line - 1, Position.Column + 1);
-                if (Board.isValidPosition(pos) && existeInimigo(pos)) {
+                if (Board.isValidPosition(pos) && existsEnemy(pos)) {
                     mat[pos.Line, pos.Column] = true;
                 }
 
-                /*if (Position.Line == 3) {
+                if (Position.Line == 3) {
                     Position left = new Position(Position.Line, Position.Column - 1);
-                    if (Board.isValidPosition(left) && existeInimigo(left) && Board.piece(left) == Match.vulneravelEnPassant) {
+                    if (Board.isValidPosition(left) && existsEnemy(left) && Board.piece(left) == Match.vulnerableToEnPassant) {
                         mat[left.Line - 1, left.Column] = true;
                     }
-                    Position direita = new Position(Position.Line, Position.Column + 1);
-                    if (Board.isValidPosition(direita) && existeInimigo(direita) && Board.piece(direita) == Match.vulneravelEnPassant) {
-                        mat[direita.Line - 1, direita.Column] = true;
+                    Position right = new Position(Position.Line, Position.Column + 1);
+                    if (Board.isValidPosition(right) && existsEnemy(right) && Board.piece(right) == Match.vulnerableToEnPassant) {
+                        mat[right.Line - 1, right.Column] = true;
                     }
-                }*/
+                }
             }
             else {
                 pos.defineValues(Position.Line + 1, Position.Column);
-                if (Board.isValidPosition(pos) && livre(pos)) {
+                if (Board.isValidPosition(pos) && isFree(pos)) {
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.defineValues(Position.Line + 2, Position.Column);
                 Position p2 = new Position(Position.Line + 1, Position.Column);
-                if (Board.isValidPosition(p2) && livre(p2) && Board.isValidPosition(pos) && livre(pos) && MovementQnt == 0) {
+                if (Board.isValidPosition(p2) && isFree(p2) && Board.isValidPosition(pos) && isFree(pos) && MovementQnt == 0) {
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.defineValues(Position.Line + 1, Position.Column - 1);
-                if (Board.isValidPosition(pos) && existeInimigo(pos)) {
+                if (Board.isValidPosition(pos) && existsEnemy(pos)) {
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.defineValues(Position.Line + 1, Position.Column + 1);
-                if (Board.isValidPosition(pos) && existeInimigo(pos)) {
+                if (Board.isValidPosition(pos) && existsEnemy(pos)) {
                     mat[pos.Line, pos.Column] = true;
                 }
 
-                
-                /*if (Position.Line == 4) {
+
+                if (Position.Line == 4) {
                     Position left = new Position(Position.Line, Position.Column - 1);
-                    if (Board.isValidPosition(left) && existeInimigo(left) && Board.piece(left) == Match.vulneravelEnPassant) {
+                    if (Board.isValidPosition(left) && existsEnemy(left) && Board.piece(left) == Match.vulnerableToEnPassant) {
                         mat[left.Line + 1, left.Column] = true;
                     }
-                    Position direita = new Position(Position.Line, Position.Column + 1);
-                    if (Board.isValidPosition(direita) && existeInimigo(direita) && Board.piece(direita) == Match.vulneravelEnPassant) {
-                        mat[direita.Line + 1, direita.Column] = true;
+                    Position right = new Position(Position.Line, Position.Column + 1);
+                    if (Board.isValidPosition(right) && existsEnemy(right) && Board.piece(right) == Match.vulnerableToEnPassant) {
+                        mat[right.Line + 1, right.Column] = true;
                     }
-                }*/
+                }
             }
 
             return mat;

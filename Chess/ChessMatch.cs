@@ -11,6 +11,7 @@ namespace chess {
         private HashSet<Piece> Pieces;
         private HashSet<Piece> CapturedPieces;
         public bool Check { get; private set; }
+        public Piece vulnerableToEnPassant { get; private set; }
 
         public ChessMatch() {
             Board = new ChessBoard(8, 8);
@@ -20,6 +21,7 @@ namespace chess {
             Pieces = new HashSet<Piece>();
             CapturedPieces = new HashSet<Piece>();
             Check = false;
+            vulnerableToEnPassant = null;
             insertPieces();
         }
 
@@ -52,6 +54,22 @@ namespace chess {
                 Board.insertPiece(piece, rookDestiny);
             }
 
+            // En Passant 
+            if (p is Pawn) {
+                if (origin.Column != destiny.Column && capturedPiece == null) {
+                    Position pos;
+                    if (p.Color == Color.White) {
+                        pos = new Position(destiny.Line + 1, destiny.Column - 1);
+                    }
+                    else {
+                        pos = new Position(destiny.Line - 1, destiny.Column);
+                    }
+
+                    capturedPiece = Board.removePiece(pos);
+                    CapturedPieces.Add(capturedPiece);
+                }
+            }
+
             return capturedPiece;
         }
 
@@ -82,10 +100,37 @@ namespace chess {
                 rookPiece.decreaseMovementQnt();
                 Board.insertPiece(rookPiece, rookOrigin);
             }
+
+            // En Passant
+            if (piece is Pawn) {
+                if (origin.Column != destiny.Column && capturedPiece == vulnerableToEnPassant) {
+                    Piece pawn = Board.removePiece(destiny);
+                    Position pos;
+                    if (piece.Color == Color.White) {
+                        pos = new Position(3, destiny.Column);
+                    }
+                    else {
+                        pos = new Position(4, destiny.Column);
+                    }
+                    Board.insertPiece(pawn, pos);
+                }
+            }
         }
 
         public void executeChessMovement(Position origin, Position destiny) {
             Piece capturedPiece = executeMovement(origin, destiny);
+            Piece piece = Board.piece(destiny);
+
+            // Promotion
+            if (piece is Pawn) {
+                if ((piece.Color == Color.White && destiny.Line == 0) || (piece.Color == Color.Black && destiny.Line == 7)) {
+                    piece = Board.removePiece(destiny);
+                    Pieces.Remove(piece);
+                    Piece queen = new Queen(Board, piece.Color);
+                    Board.insertPiece(queen, destiny);
+                    Pieces.Add(queen);
+                }
+            }
 
             if (isItInCheck(CurrentPlayer)) {
                 undoMovement(origin, destiny, capturedPiece);
@@ -105,6 +150,15 @@ namespace chess {
             else {
                 Turn++;
                 switchPlayer();
+            }
+
+
+            // En Passant
+            if (piece is Pawn && (destiny.Line == origin.Line - 2 || destiny.Line == origin.Line + 2)) {
+                vulnerableToEnPassant = piece;
+            }
+            else {
+                vulnerableToEnPassant = null;
             }
 
         }
@@ -178,14 +232,14 @@ namespace chess {
             insertNewPiece('f', 1, new Bishop(Board, Color.White));
             insertNewPiece('g', 1, new Knight(Board, Color.White));
             insertNewPiece('h', 1, new Rook(Board, Color.White));
-            insertNewPiece('a', 2, new Pawn(Board, Color.White));
-            insertNewPiece('b', 2, new Pawn(Board, Color.White));
-            insertNewPiece('c', 2, new Pawn(Board, Color.White));
-            insertNewPiece('d', 2, new Pawn(Board, Color.White));
-            insertNewPiece('e', 2, new Pawn(Board, Color.White));
-            insertNewPiece('f', 2, new Pawn(Board, Color.White));
-            insertNewPiece('g', 2, new Pawn(Board, Color.White));
-            insertNewPiece('h', 2, new Pawn(Board, Color.White));
+            insertNewPiece('a', 2, new Pawn(Board, Color.White, this));
+            insertNewPiece('b', 2, new Pawn(Board, Color.White, this));
+            insertNewPiece('c', 2, new Pawn(Board, Color.White, this));
+            insertNewPiece('d', 2, new Pawn(Board, Color.White, this));
+            insertNewPiece('e', 2, new Pawn(Board, Color.White, this));
+            insertNewPiece('f', 2, new Pawn(Board, Color.White, this));
+            insertNewPiece('g', 2, new Pawn(Board, Color.White, this));
+            insertNewPiece('h', 2, new Pawn(Board, Color.White, this));
 
             insertNewPiece('a', 8, new Rook(Board, Color.Black));
             insertNewPiece('b', 8, new Knight(Board, Color.Black));
@@ -195,14 +249,14 @@ namespace chess {
             insertNewPiece('f', 8, new Bishop(Board, Color.Black));
             insertNewPiece('g', 8, new Knight(Board, Color.Black));
             insertNewPiece('h', 8, new Rook(Board, Color.Black));
-            insertNewPiece('a', 7, new Pawn(Board, Color.Black));
-            insertNewPiece('b', 7, new Pawn(Board, Color.Black));
-            insertNewPiece('c', 7, new Pawn(Board, Color.Black));
-            insertNewPiece('d', 7, new Pawn(Board, Color.Black));
-            insertNewPiece('e', 7, new Pawn(Board, Color.Black));
-            insertNewPiece('f', 7, new Pawn(Board, Color.Black));
-            insertNewPiece('g', 7, new Pawn(Board, Color.Black));
-            insertNewPiece('h', 7, new Pawn(Board, Color.Black));
+            insertNewPiece('a', 7, new Pawn(Board, Color.Black, this));
+            insertNewPiece('b', 7, new Pawn(Board, Color.Black, this));
+            insertNewPiece('c', 7, new Pawn(Board, Color.Black, this));
+            insertNewPiece('d', 7, new Pawn(Board, Color.Black, this));
+            insertNewPiece('e', 7, new Pawn(Board, Color.Black, this));
+            insertNewPiece('f', 7, new Pawn(Board, Color.Black, this));
+            insertNewPiece('g', 7, new Pawn(Board, Color.Black, this));
+            insertNewPiece('h', 7, new Pawn(Board, Color.Black, this));
         }
 
         private Color adversary(Color color) {
